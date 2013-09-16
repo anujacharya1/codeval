@@ -386,14 +386,18 @@ class BuildMatrix():
     
     def computeSS(self, name, product):
         
+        characters  = 'abcdefghijklmnopqrstuvwxyz'
+        vowels      = 'aeiouy'
+        consonants  ='bcdfghjklmnpqrstvwxz'
+        
         weight = 0.0
-        num_product_letters = self.countChars(product.lower())
-        num_name_letters = self.countChars(name.lower())
+        num_product_letters = self.countChars(product.lower(), characters)
+        num_name_letters = self.countChars(name.lower(), characters)    
     
         if num_product_letters % 2 == 0:
-            weight = self.countVowels(name.lower()) * 1.5
+            weight = self.countChars(name.lower(), vowels) * 1.5
         else:
-            weight = self.countConsonants(name.lower())
+            weight = self.countChars(name.lower(), consonants)
         
         if (self.euclid_gcd(num_product_letters, num_name_letters) > 1):
             weight = weight * 1.5
@@ -441,44 +445,26 @@ class BuildMatrix():
             total += value
         return total
                 
-                
-    def countChars(self, input):
-        characters = 'abcdefghijklmnopqrstuvwxyz'
-        count = 0
-        for ch in input:
-            if ch in characters:
-                count = count+1
+    def countChars(self, input, characters):
+        """ Count number of characters present in the input"""
+      
+        count = len([ch for ch in input if ch in characters])
         return count
-        
-    def countVowels(self,name):
-        vowels = 'aeiouy'
-        count = 0
-        for ch in name:
-            if ch in vowels:
-                count= count+1
-        return count
-    
-    def countConsonants(self,name):
-        consonants='bcdfghjklmnpqrstvwxz'
-        count = 0
-        for ch in name:
-            if ch in consonants:
-                count= count+1
-        return count
-
 
 if __name__ == "__main__":
     #file = open('/Users/anujacharya/Documents/workspace/eBay/DiscountOffer/test.txt', 'r')
-    file = open(sys.argv[1],'r')
-    for line in file:
-        tempList = line.strip().split(';')
-        names = tempList[0].split(',')
-        products = tempList[1].split(',')
-        #names, products = [semi.split(',') for semi in line.strip().split(';')]
-        #matrix = build_cost_matrix(names, products)
-        #print '%.2f' % optimal_path(matrix)
-        obj = BuildMatrix(names,products)
-        matrix = obj.buildMatrix()
-        total = obj.optimal_path(matrix)
-        print '%.2f' %  total
+#     file = open(sys.argv[1],'r')
+#     for line in file:
+    with open('/Users/anujacharya/Documents/workspace/CodeEval/test.txt', 'r') as f:
+        for line in f:
+            tempList = line.strip().split(';')
+            names = tempList[0].split(',')
+            products = tempList[1].split(',')
+            #names, products = [semi.split(',') for semi in line.strip().split(';')]
+            #matrix = build_cost_matrix(names, products)
+            #print '%.2f' % optimal_path(matrix)
+            obj = BuildMatrix(names,products)
+            matrix = obj.buildMatrix()
+            total = obj.optimal_path(matrix)
+            print '%.2f' %  total
     sys.exit(0)

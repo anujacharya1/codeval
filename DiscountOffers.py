@@ -374,8 +374,6 @@ class Munkres:
                     self.marked[i][j] = 0
 #===============================================================================
 # My Code
-# I give all the credit to https://github.com/t0m/codeeval/blob/master/python-challenges/48_discount_offers.py
-# As even though I coded it using classes it approach is same as his
 #===============================================================================
 
 class BuildMatrix():
@@ -427,7 +425,10 @@ class BuildMatrix():
         return matrix
     
     def optimal_path(self,matrix):
-        """Use the hungarian algorithm in the munkres package to figure out the 
+        """
+        I got this hint after reading https://github.com/t0m/codeeval/blob/master/python-challenges/48_discount_offers.py
+        
+        Use the hungarian algorithm in the munkres package to figure out the 
         optimal assignment for our cost matrix.
         
         http://en.wikipedia.org/wiki/Hungarian_algorithm
@@ -457,12 +458,7 @@ if __name__ == "__main__":
 #     for line in file:
     with open('/Users/anujacharya/Documents/workspace/CodeEval/test.txt', 'r') as f:
         for line in f:
-            tempList = line.strip().split(';')
-            names = tempList[0].split(',')
-            products = tempList[1].split(',')
-            #names, products = [semi.split(',') for semi in line.strip().split(';')]
-            #matrix = build_cost_matrix(names, products)
-            #print '%.2f' % optimal_path(matrix)
+            names, products = [temList.split(',') for temList in line.rstrip().split(';')]
             obj = BuildMatrix(names,products)
             matrix = obj.buildMatrix()
             total = obj.optimal_path(matrix)
